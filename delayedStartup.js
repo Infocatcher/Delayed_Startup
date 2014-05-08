@@ -36,8 +36,8 @@ var delayedStartup = {
 		this.readFromFileAsync(dataFile, function(data) {
 			if(!data)
 				Components.utils.reportError(LOG_PREFIX + "%profile%/" + this.dataFileName + " is missing or empty");
-			else
-				this.exts = JSON.parse(data);
+			else // Allowed simple " // ..." comments
+				this.exts = JSON.parse(data.replace(/ \/\/ .*$/mg, ""));
 			callback.call(context);
 		}, this);
 	},
