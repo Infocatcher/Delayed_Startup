@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	 xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+	<Description about="urn:mozilla:install-manifest">
+		<em:id>delayedStartup@infocatcher</em:id>
+		<em:type>2</em:type>
+		<em:bootstrap>true</em:bootstrap>
+		<em:name>Delayed Startup</em:name>
+		<em:version>0.1.0a1</em:version>
+		<em:description>Adds ability to enable restartless extensions after delay (and disable them on shutdown) to reduce startup time</em:description>
+		<em:creator>Infocatcher</em:creator>
+		<em:updateURL>http://infocatcher.ucoz.net/ext/fx/delayed_startup/update.rdf</em:updateURL>
+		<em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLgtEbrhCdZetIAanFNvkT441WwBgXcg1Zzlo5s5
+		              j9VLByj/L6UXAVqSria1dejjkKfxVbRXvqalJ7mENRambKpZ4AfV3dBCKUDjME56CMaAK7+DxMqaM3
+		              KEDKXn8XfqL2qkFsgcVjqh6AfltKRcyLGkU9+YQ82EXo6xm47hywoQIDAQAB</em:updateKey>
+
+		<em:targetApplication> <!-- Any Gecko-based application -->
+			<Description>
+				<em:id>toolkit@mozilla.org</em:id>
+				<em:minVersion>11.0</em:minVersion>
+				<em:maxVersion>32.0a1</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+
+		<em:localized>
+			<Description>
+				<em:locale>en-US</em:locale>
+				<em:name>Delayed Startup</em:name>
+				<em:description>Adds ability to enable restartless extensions after delay (and disable them on shutdown) to reduce startup time</em:description>
+				<em:creator>Infocatcher</em:creator>
+			</Description>
+		</em:localized>
+
+		<em:localized>
+			<Description>
+				<em:locale>ru</em:locale>
+				<em:name>Delayed Startup</em:name>
+				<em:description>Добавляет возможность включать расширения, не требующие перезапуска, после задержки (и отключать их при выходе) для ускорения запуска</em:description>
+				<em:creator>Infocatcher</em:creator>
+			</Description>
+		</em:localized>
+
+	</Description>
+</RDF>
