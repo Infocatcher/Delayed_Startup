@@ -26,5 +26,5 @@ All delays are in milliseconds.
 }
 ```
 ##### Additional options on about:config page
-* <em>extensions.delayedStartup.initialDelay</em> – initial delay before reading of configuration file
+* <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
 * <em>extensions.delayedStartup.debug</em> – show debug messages in error console
