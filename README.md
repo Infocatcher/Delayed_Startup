@@ -3,7 +3,7 @@ Extension for Firefox, SeaMonkey, Thunderbird and other Gecko-based applications
 <br>There is no UI (at least for now) to keep it light and fast.
 
 ### Configuration
-Configuration stored in %profile%/delayedStartup.json file (should be created manually with UTF-8 encoding).
+Configuration stored in <a href="https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data">%profile%</a>/delayedStartup.json file (should be created manually with UTF-8 encoding).
 
 ##### Format:
 ```js
