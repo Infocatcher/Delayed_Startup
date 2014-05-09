@@ -36,10 +36,15 @@ var delayedStartup = {
 		this.readFromFileAsync(dataFile, function(data) {
 			if(!data)
 				Components.utils.reportError(LOG_PREFIX + "%profile%/" + this.dataFileName + " is missing or empty");
-			else // Allowed simple " // ..." comments
-				this.exts = JSON.parse(data.replace(/ \/\/ .*$/mg, ""));
+			else
+				this.exts = JSON.parse(this.trimComments(data));
 			callback.call(context);
 		}, this);
+	},
+	trimComments: function(s) {
+		return s
+			.replace(/^\s*\/\/.*$/mg, "") // Remove all comments at line start
+			.replace(/[ \t]\/\/[ \t].*$/mg, ""); // Allow only " // " for other comments
 	},
 	loadDelayed: function(extId, delay) {
 		this._timers[extId] = timer(function() {
