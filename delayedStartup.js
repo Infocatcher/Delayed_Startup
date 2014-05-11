@@ -67,43 +67,44 @@ var delayedStartup = {
 		});
 	},
 	readFromFileAsync: function(file, callback, context) {
-		if(parseFloat(Services.appinfo.platformVersion) >= 20) {
-			var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
-			var onFailure = function(err) {
-				Components.utils.reportError(err);
-				callback.call(context, "");
-			};
-			OS.File.read(file.path).then(
-				function onSuccess(arr) {
-					var TextDecoder = Components.utils.getGlobalForObject(OS).TextDecoder;
-					var data = new TextDecoder().decode(arr);
-					callback.call(context, data);
-				},
-				onFailure
-			).then(null, onFailure);
+		if(parseFloat(Services.appinfo.platformVersion) < 20) {
+			var {NetUtil} = Components.utils.import("resource://gre/modules/NetUtil.jsm", {});
+			NetUtil.asyncFetch(file, function(istream, status) {
+				var data = "";
+				if(Components.isSuccessCode(status)) {
+					try { // Firefox 7+ throws after istream.available() on empty files
+						data = NetUtil.readInputStreamToString(
+							istream,
+							istream.available(),
+							{ charset: "UTF-8", replacement: "\ufffd" } // Only Gecko 11.0+
+						);
+					}
+					catch(e) {
+						if(String(e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
+							Components.utils.reportError(e);
+					}
+				}
+				else {
+					Components.utils.reportError(LOG_PREFIX + "NetUtil.asyncFetch() failed: " + status);
+				}
+				callback.call(context, data);
+			});
 			return;
 		}
-		var {NetUtil} = Components.utils.import("resource://gre/modules/NetUtil.jsm", {});
-		NetUtil.asyncFetch(file, function(istream, status) {
-			var data = "";
-			if(Components.isSuccessCode(status)) {
-				try { // Firefox 7+ throws after istream.available() on empty files
-					data = NetUtil.readInputStreamToString(
-						istream,
-						istream.available(),
-						{ charset: "UTF-8", replacement: "\ufffd" } // Only Gecko 11.0+
-					);
-				}
-				catch(e) {
-					if(String(e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
-						Components.utils.reportError(e);
-				}
-			}
-			else {
-				Components.utils.reportError(LOG_PREFIX + "NetUtil.asyncFetch() failed: " + status);
-			}
-			callback.call(context, data);
-		});
+
+		var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
+		var onFailure = function(err) {
+			Components.utils.reportError(err);
+			callback.call(context, "");
+		};
+		OS.File.read(file.path).then(
+			function onSuccess(arr) {
+				var TextDecoder = Components.utils.getGlobalForObject(OS).TextDecoder;
+				var data = new TextDecoder().decode(arr);
+				callback.call(context, data);
+			},
+			onFailure
+		).then(null, onFailure);
 	}
 };
 
