@@ -13,7 +13,7 @@ var delayedStartup = {
 				for(var extId in exts)
 					this.loadDelayed(extId, exts[extId]);
 			}
-			var stylesId = "\x00#styles#\x00";
+			var stylesId = "\x00delayedStartup#styles";
 			this._timers[stylesId] = timer(function() {
 				delete this._timers[stylesId];
 				this.loadStyles();
