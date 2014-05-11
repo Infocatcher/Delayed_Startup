@@ -13,6 +13,11 @@ var delayedStartup = {
 				for(var extId in exts)
 					this.loadDelayed(extId, exts[extId]);
 			}
+			var stylesId = "\x00#styles#\x00";
+			this._timers[stylesId] = timer(function() {
+				delete this._timers[stylesId];
+				this.loadStyles();
+			}.bind(this), 0);
 		}, this);
 	},
 	destroy: function(reason) {
@@ -26,6 +31,7 @@ var delayedStartup = {
 		else {
 			for(var tmr in this._timers)
 				tmt.cancel();
+			this.unloadStyles();
 		}
 	},
 	readConfig: function(callback, context) {
@@ -65,6 +71,47 @@ var delayedStartup = {
 			else if(addon.userDisabled != disable)
 				addon.userDisabled = disable;
 		});
+	},
+	get sss() {
+		delete this.sss;
+		return this.sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+			.getService(Components.interfaces.nsIStyleSheetService);
+	},
+	loadStyles: function() {
+		var selectors = [];
+		for(var extId in this.exts) {
+			selectors.push(
+				'.addon[value="' + extId.replace(/"/g, '\\"') + '"]'
+				+ ' .addon-control:-moz-any(.enable, .disable, .remove) > .button-box'
+			);
+		}
+		var cssStr = '\
+			/* Delayed Startup: extensions with delayed initialization */\n\
+			@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");\n\
+			@-moz-document url("about:addons"),\n\
+				url("chrome://mozapps/content/extensions/extensions.xul") {\n\
+				' + selectors.join(",\n				") + ' {\n\
+					opacity: 0.5 !important;\n\
+				}\n\
+			}';
+		var cssURI = this.cssURI = this.newCssURI(cssStr);
+		var sss = this.sss;
+		if(!sss.sheetRegistered(cssURI, sss.USER_SHEET))
+			sss.loadAndRegisterSheet(cssURI, sss.USER_SHEET);
+	},
+	unloadStyles: function() {
+		var cssURI = this.cssURI;
+		var sss = this.sss;
+		if(cssURI && sss.sheetRegistered(cssURI, sss.USER_SHEET))
+			sss.unregisterSheet(cssURI, sss.USER_SHEET);
+	},
+	newCssURI: function(cssStr) {
+		cssStr = this.trimMultilineString(cssStr);
+		return Services.io.newURI("data:text/css," + encodeURIComponent(cssStr), null, null);
+	},
+	trimMultilineString: function(s) {
+		var spaces = s.match(/^[ \t]*/)[0];
+		return s.replace(new RegExp("^" + spaces, "mg"), "");
 	},
 	readFromFileAsync: function(file, callback, context) {
 		if(parseFloat(Services.appinfo.platformVersion) < 20) {
