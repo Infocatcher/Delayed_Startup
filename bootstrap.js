@@ -9,6 +9,7 @@ function startup(params, reason) {
 	function initPrefs() {
 		var defBranch = Services.prefs.getDefaultBranch("");
 		defBranch.setIntPref("extensions.delayedStartup.initialDelay", 50);
+		defBranch.setCharPref("extensions.delayedStartup.shutdownNotification", "profile-change-teardown");
 		defBranch.setBoolPref("extensions.delayedStartup.debug", false);
 	}
 	function init() {
