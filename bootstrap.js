@@ -1,3 +1,4 @@
+const prefNS = "extensions.delayedStartup.";
 var delayedStartup, startupObserver, startupTimer;
 
 function install(params, reason) {
@@ -8,9 +9,9 @@ function startup(params, reason) {
 	Components.utils.import("resource://gre/modules/Services.jsm");
 	function initPrefs() {
 		var defBranch = Services.prefs.getDefaultBranch("");
-		defBranch.setIntPref("extensions.delayedStartup.initialDelay", 50);
-		defBranch.setCharPref("extensions.delayedStartup.shutdownNotification", "profile-change-teardown");
-		defBranch.setBoolPref("extensions.delayedStartup.debug", false);
+		defBranch.setIntPref(prefNS + "initialDelay", 50);
+		defBranch.setCharPref(prefNS + "shutdownNotification", "profile-change-teardown");
+		defBranch.setBoolPref(prefNS + "debug", false);
 	}
 	function init() {
 		startupTimer = null;
@@ -28,7 +29,7 @@ function startup(params, reason) {
 					return;
 				initialized = true;
 				initPrefs();
-				var initialDelay = Services.prefs.getIntPref("extensions.delayedStartup.initialDelay");
+				var initialDelay = Services.prefs.getIntPref(prefNS +  "initialDelay");
 				startupTimer = timer(init, initialDelay);
 			}, false);
 		}, "domwindowopened", false);
