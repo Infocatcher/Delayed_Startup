@@ -30,4 +30,5 @@ All delays are in milliseconds.
 Note: spaces around “//” are required (because comments isn't allowed in JSON and we remove them manually)!
 ##### Additional options on about:config page
 * <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
+* <em>extensions.delayedStartup.shutdownNotification</em> – disable extensions after this <a href="https://developer.mozilla.org/en-US/docs/Observer_Notifications">notification</a> (use empty string to disable right after <a href="https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions#Reason_constants">APP_SHUTDOWN</a>)
 * <em>extensions.delayedStartup.debug</em> – show debug messages in error console
