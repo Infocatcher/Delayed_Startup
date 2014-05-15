@@ -21,6 +21,8 @@ var delayedStartup = {
 		}, this);
 	},
 	destroy: function(reason) {
+		for(var tmr in this._timers)
+			tmr.cancel();
 		if(reason == APP_SHUTDOWN) {
 			var exts = this.exts;
 			for(var extId in exts) {
@@ -29,8 +31,6 @@ var delayedStartup = {
 			}
 		}
 		else {
-			for(var tmr in this._timers)
-				tmr.cancel();
 			this.unloadStyles();
 		}
 	},
