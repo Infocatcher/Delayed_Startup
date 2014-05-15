@@ -24,14 +24,23 @@ var delayedStartup = {
 		for(var tmr in this._timers)
 			tmr.cancel();
 		if(reason == APP_SHUTDOWN) {
-			var exts = this.exts;
-			for(var extId in exts) {
-				_log("Disable " + extId);
-				this.disableExtension(extId, true);
-			}
+			_log("APP_SHUTDOWN");
+			Services.obs.addObserver(function observer(subject, topic, data) {
+				// Following doesn't work (NS_ERROR_FAILURE) and isn't really needed on shutdown
+				//Services.obs.removeObserver(observer, topic);
+				_log(topic);
+				this.onShutdown();
+			}.bind(this), "profile-change-teardown", false);
 		}
 		else {
 			this.unloadStyles();
+		}
+	},
+	onShutdown: function() {
+		var exts = this.exts;
+		for(var extId in exts) {
+			_log("Disable " + extId);
+			this.disableExtension(extId, true);
 		}
 	},
 	readConfig: function(callback, context) {
