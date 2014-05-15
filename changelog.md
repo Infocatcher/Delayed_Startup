@@ -6,6 +6,9 @@
 `*` – improved<br>
 
 ##### master/HEAD
+`x` Correctly cancel active timers on extension (and browser) shutdown.<br>
+`*` Disable extensions after closing of all browser windows (<a href="https://github.com/Infocatcher/Delayed_Startup/issues/1">#1</a>).<br>
+
 ##### 0.1.0a2 (2014-05-12)
 `*` Improved support for comments in delayedStartup.json.<br>
 `x` Correctly initialize, if first window was closed before “load” event.<br>
