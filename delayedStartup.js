@@ -30,7 +30,7 @@ var delayedStartup = {
 		}
 		else {
 			for(var tmr in this._timers)
-				tmt.cancel();
+				tmr.cancel();
 			this.unloadStyles();
 		}
 	},
