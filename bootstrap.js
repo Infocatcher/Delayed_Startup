@@ -29,7 +29,7 @@ function startup(params, reason) {
 					return;
 				initialized = true;
 				initPrefs();
-				var initialDelay = Services.prefs.getIntPref(prefNS +  "initialDelay");
+				var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
 				startupTimer = timer(init, initialDelay);
 			}, false);
 		}, "domwindowopened", false);

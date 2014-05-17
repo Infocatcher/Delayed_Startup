@@ -25,7 +25,7 @@ var delayedStartup = {
 			tmr.cancel();
 		if(reason == APP_SHUTDOWN) {
 			_log("APP_SHUTDOWN");
-			var topic = Services.prefs.getCharPref(prefNS +  "shutdownNotification");
+			var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
 			if(!topic) {
 				this.onShutdown();
 				return;
@@ -176,7 +176,7 @@ function ts() {
 	return d.toLocaleFormat("%M:%S:") + "000".substr(String(ms).length) + ms + " ";
 }
 function _log(s) {
-	if(!Services.prefs.getBoolPref(prefNS +  "debug"))
+	if(!Services.prefs.getBoolPref(prefNS + "debug"))
 		return;
 	var msg = LOG_PREFIX + ts() + s;
 	Services.console.logStringMessage(msg);
