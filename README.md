@@ -35,7 +35,8 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 	var restartless = addons.filter(function(addon) {
 		var ops = addon.operationsRequiringRestart;
 		return !addon.appDisabled
-			&& !(ops & AddonManager.OP_NEEDS_RESTART_ENABLE || ops & AddonManager.OP_NEEDS_RESTART_DISABLE);
+			&& !(ops & AddonManager.OP_NEEDS_RESTART_ENABLE || ops & AddonManager.OP_NEEDS_RESTART_DISABLE)
+			&& addon.id != "delayedStartup@infocatcher";
 	}).map(function(addon, i, addons) {
 		var id = addon.id.replace(/"/g, '\\"');
 		var name = addon.name.replace(/\n|\r/, " ");
