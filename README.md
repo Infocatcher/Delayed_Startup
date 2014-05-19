@@ -37,18 +37,34 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 		return !addon.appDisabled
 			&& !(ops & AddonManager.OP_NEEDS_RESTART_ENABLE || ops & AddonManager.OP_NEEDS_RESTART_DISABLE)
 			&& addon.id != "delayedStartup@infocatcher";
-	}).map(function(addon, i, addons) {
-		var id = addon.id.replace(/"/g, '\\"');
+	});
+	var lastIndx = restartless.length - 1;
+	var maxId = 0;
+	function escId(id) {
+		return id.replace(/"/g, '\\"');
+	}
+	function getDelay(i) {
+		return (i + 1)*200;
+	}
+	restartless.forEach(function(addon) {
+		var idLength = escId(addon.id).length;
+		if(idLength > maxId)
+			maxId = idLength;
+	});
+	var maxPad = new Array(maxId + 2 + String(getDelay(lastIndx)).length).join(" ");
+	var out = restartless.map(function(addon, i) {
+		var id = escId(addon.id);
 		var name = addon.name.replace(/\n|\r/, " ");
-		var delay = (i + 1)*200;
-		var notLast = i != addons.length - 1 ? "," : "";
-		return '\t"' + id + '": ' + delay + notLast + ' // ' + name;
+		var delay = getDelay(i);
+		var notLast = i != lastIndx ? "," : " ";
+		var pad = maxPad.substr(id.length + notLast.length + String(delay).length);
+		return '\t"' + id + '": ' + pad + delay + notLast + ' // ' + name;
 	});
 	var console = Components.classes["@mozilla.org/consoleservice;1"]
 		.getService(Components.interfaces.nsIConsoleService);
 	console.logStringMessage(
 		"// Restartless extensions, template for Delayed Startup:\n{\n"
-		+ restartless.join("\n")
+		+ out.join("\n")
 		+ "\n}"
 	);
 });
