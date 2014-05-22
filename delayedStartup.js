@@ -83,8 +83,10 @@ var delayedStartup = {
 		this.addonManager.getAddonByID(extId, function(addon) {
 			if(!addon)
 				Components.utils.reportError(LOG_PREFIX + "Extension " + extId + " not found!");
-			else if(addon.userDisabled != disable)
+			else if(addon.userDisabled != disable) {
+				_log(addon.id + " (" + addon.name + "): userDisabled -> " + disable);
 				addon.userDisabled = disable;
+			}
 		});
 	},
 	get sss() {
