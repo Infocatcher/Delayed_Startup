@@ -14,7 +14,7 @@ Configuration stored in <a href="https://support.mozilla.org/en-US/kb/profiles-w
 	"extensionId-N": delayN
 }
 ```
-All delays are in milliseconds.
+All delays are in milliseconds, use `-1` to only disable on shutdown.
 <br>Tip: you can get extension identifiers on about:support page.
 ##### Example:
 ```js
