@@ -1,5 +1,6 @@
 const prefNS = "extensions.delayedStartup.";
 var delayedStartup, startupObserver, startupTimer;
+var global = this;
 
 function install(params, reason) {
 }
@@ -15,7 +16,15 @@ function startup(params, reason) {
 	}
 	function init() {
 		startupTimer = null;
-		Services.scriptloader.loadSubScript("chrome://delayedstartup/content/delayedStartup.js");
+		var rootURL = parseFloat(Services.appinfo.platformVersion) >= 10
+			? "chrome://delayedstartup/content/"
+			: params && params.resourceURI
+				? params.resourceURI.spec
+				: new Error().fileName
+					.replace(/^.* -> /, "")
+					.replace(/[^\/]+$/, "");
+		// Note: we should specify target object at least for Firefox 4
+		Services.scriptloader.loadSubScript(rootURL + "delayedStartup.js", global);
 		delayedStartup.init(reason);
 	}
 	if(reason == APP_STARTUP) {
