@@ -68,6 +68,8 @@ var delayedStartup = {
 			.replace(/[ \t]\/\/[ \t].*$/mg, ""); // Allow only " // " for other comments
 	},
 	loadDelayed: function(extId, delay) {
+		if(delay < 0)
+			return;
 		this._timers[extId] = timer(function() {
 			_log(delay + " ms => enable " + extId);
 			delete this._timers[extId];
