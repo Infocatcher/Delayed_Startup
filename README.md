@@ -63,7 +63,9 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 	var console = Components.classes["@mozilla.org/consoleservice;1"]
 		.getService(Components.interfaces.nsIConsoleService);
 	console.logStringMessage(
-		"// Restartless extensions, template for Delayed Startup:\n{\n"
+		"// Restartless extensions, template for Delayed Startup\n"
+		+ "// https://github.com/Infocatcher/Delayed_Startup#configuration\n"
+		+ "{\n"
 		+ out.join("\n")
 		+ "\n}"
 	);
