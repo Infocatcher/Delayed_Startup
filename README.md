@@ -30,6 +30,7 @@ All delays are in milliseconds, use `-1` to only disable on shutdown.
 Note: spaces around “//” are required (because comments isn't allowed in JSON and we remove them manually)!
 ##### Simple template generator:
 ```js
+Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
 AddonManager.getAddonsByTypes(["extension"], function(addons) {
 	var restartless = addons.filter(function(addon) {
@@ -60,9 +61,7 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 		var pad = maxPad.substr(id.length + notLast.length + String(delay).length);
 		return '\t"' + id + '": ' + pad + delay + notLast + ' // ' + name;
 	});
-	var console = Components.classes["@mozilla.org/consoleservice;1"]
-		.getService(Components.interfaces.nsIConsoleService);
-	console.logStringMessage(
+	Services.console.logStringMessage(
 		"// Restartless extensions, template for Delayed Startup\n"
 		+ "// https://github.com/Infocatcher/Delayed_Startup#configuration\n"
 		+ "{\n"
