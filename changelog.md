@@ -7,6 +7,7 @@
 
 ##### master/HEAD
 `+` Added ability to only disable extensions on shutdown (set delay to `-1`).<br>
+`+` Added support for Gecko 2 – 9.<br>
 
 ##### 0.1.0a3 (2014-05-17)
 `x` Correctly cancel active timers on extension (and browser) shutdown.<br>
