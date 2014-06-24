@@ -6,6 +6,8 @@
 `*` – improved<br>
 
 ##### master/HEAD
+`+` Added ability to only disable extensions on shutdown (set delay to `-1`).<br>
+
 ##### 0.1.0a3 (2014-05-17)
 `x` Correctly cancel active timers on extension (and browser) shutdown.<br>
 `*` Disable extensions after closing of all browser windows (faster and without needless UI modifications) (<a href="https://github.com/Infocatcher/Delayed_Startup/issues/1">#1</a>).<br>
