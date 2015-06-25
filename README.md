@@ -70,8 +70,8 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 	);
 });
 ```
-Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute above code.
-##### Additional options on about:config page
+Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute above code (note: <em>devtools.chrome.enabled</em> should be set to <em>true</em> in about:config).
+##### Additional options in about:config
 * <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
 * <em>extensions.delayedStartup.shutdownNotification</em> – disable extensions after this <a href="https://developer.mozilla.org/en-US/docs/Observer_Notifications">notification</a> (use empty string to disable right after <a href="https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions#Reason_constants">APP_SHUTDOWN</a>)
 * <em>extensions.delayedStartup.debug</em> – show debug messages in error console
