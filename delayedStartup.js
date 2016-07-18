@@ -56,7 +56,7 @@ var delayedStartup = {
 		dataFile.append(this.dataFileName);
 		this.readFromFileAsync(dataFile, function(data) {
 			if(!data)
-				Components.utils.reportError(LOG_PREFIX + "%profile%/" + this.dataFileName + " is missing or empty");
+				Components.utils.reportError(LOG_PREFIX + dataFile.path + " is missing or empty");
 			else
 				this.exts = JSON.parse(this.trimComments(data));
 			callback.call(context);
