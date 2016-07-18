@@ -158,14 +158,13 @@ var delayedStartup = {
 			return;
 		}
 
-		var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
+		var {OS, TextDecoder} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
 		var onFailure = function(err) {
 			Components.utils.reportError(err);
 			callback.call(context, "");
 		};
 		OS.File.read(file.path).then(
 			function onSuccess(arr) {
-				var TextDecoder = Components.utils.getGlobalForObject(OS).TextDecoder;
 				var data = new TextDecoder().decode(arr);
 				callback.call(context, data);
 			},
