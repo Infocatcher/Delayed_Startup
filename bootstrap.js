@@ -27,26 +27,25 @@ function startup(params, reason) {
 		Services.scriptloader.loadSubScript(rootURL + "delayedStartup.js", global);
 		delayedStartup.init(reason);
 	}
-	if(reason == APP_STARTUP) {
-		var initialized = false;
-		Services.obs.addObserver(startupObserver = function observer(subject, topic, data) {
-			subject.addEventListener("load", function load(e) {
-				Services.obs.removeObserver(observer, topic);
-				startupObserver = null;
-				subject.removeEventListener("load", load, false);
-				if(initialized)
-					return;
-				initialized = true;
-				initPrefs();
-				var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
-				startupTimer = timer(init, initialDelay);
-			}, false);
-		}, "domwindowopened", false);
-	}
- 	else {
+	if(reason != APP_STARTUP) {
 		initPrefs();
 		init();
+		return;
 	}
+	var initialized = false;
+	Services.obs.addObserver(startupObserver = function observer(subject, topic, data) {
+		subject.addEventListener("load", function load(e) {
+			Services.obs.removeObserver(observer, topic);
+			startupObserver = null;
+			subject.removeEventListener("load", load, false);
+			if(initialized)
+				return;
+			initialized = true;
+			initPrefs();
+			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
+			startupTimer = timer(init, initialDelay);
+		}, false);
+	}, "domwindowopened", false);
 }
 function shutdown(params, reason) {
 	startupTimer    && startupTimer.cancel();
