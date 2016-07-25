@@ -77,9 +77,9 @@ var delayedStartup = {
 		}.bind(this), delay);
 	},
 	get addonManager() {
-		var {AddonManager} = Components.utils.import("resource://gre/modules/AddonManager.jsm", {});
 		delete this.addonManager;
-		return this.addonManager = AddonManager;
+		return this.addonManager = Components.utils.import("resource://gre/modules/AddonManager.jsm", {})
+			.AddonManager;
 	},
 	disableExtension: function(extId, disable) {
 		this.addonManager.getAddonByID(extId, function(addon) {
