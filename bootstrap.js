@@ -9,10 +9,10 @@ function uninstall(params, reason) {
 function startup(params, reason) {
 	Components.utils.import("resource://gre/modules/Services.jsm");
 	function initPrefs() {
-		var defBranch = Services.prefs.getDefaultBranch("");
-		defBranch.setIntPref(prefNS + "initialDelay", 50);
-		defBranch.setCharPref(prefNS + "shutdownNotification", "profile-change-teardown");
-		defBranch.setBoolPref(prefNS + "debug", false);
+		var db = Services.prefs.getDefaultBranch(prefNS);
+		db.setIntPref("initialDelay", 50);
+		db.setCharPref("shutdownNotification", "profile-change-teardown");
+		db.setBoolPref("debug", false);
 	}
 	function init() {
 		startupTimer = null;
