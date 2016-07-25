@@ -18,6 +18,7 @@ var delayedStartup = {
 				delete this._timers[stylesId];
 				this.loadStyles();
 			}.bind(this), 0);
+			this.setupAPI();
 		}, this);
 	},
 	destroy: function(reason) {
@@ -131,6 +132,13 @@ var delayedStartup = {
 	trimMultilineString: function(s) {
 		var spaces = s.match(/^[ \t]*/)[0];
 		return s.replace(new RegExp("^" + spaces, "mg"), "");
+	},
+	setupAPI: function() {
+		var g = Components.utils.getGlobalForObject(Services);
+		var o = Services.delayedStartupAddons = new g.Object(); // Trick to prevent memory leak
+		var exts = this.exts;
+		for(var extId in exts)
+			o[extId] = exts[extId];
 	},
 	readFromFileAsync: function(file, callback, context) {
 		if(parseFloat(Services.appinfo.platformVersion) < 20) {
