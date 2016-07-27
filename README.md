@@ -76,3 +76,15 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 * <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
 * <em>extensions.delayedStartup.shutdownNotification</em> – disable extensions after this <a href="https://developer.mozilla.org/en-US/docs/Observer_Notifications">notification</a> (use empty string to disable right after <a href="https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions#Reason_constants">APP_SHUTDOWN</a>)
 * <em>extensions.delayedStartup.debug</em> – show debug messages in error console
+
+### API
+Simple and read-only `Services.delayedStartupAddons` API:
+```js
+//Components.utils.import("resource://gre/modules/Services.jsm");
+function getStartupDelay(extId) {
+	return "delayedStartupAddons" in Services
+		&& Services.delayedStartupAddons[extId] || null;
+}
+var dalay = getStartupDelay("firebug@software.joehewitt.com");
+alert(dalay);
+```
