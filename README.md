@@ -29,6 +29,7 @@ All delays are in milliseconds, use `-1` to only disable on shutdown.
 ```
 Note: spaces around “//” are required (because comments isn't allowed in JSON and we remove them manually)!
 ##### Simple template generator:
+Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute following code (note: <em>devtools.chrome.enabled</em> should be set to <em>true</em> in about:config):
 ```js
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
@@ -70,7 +71,7 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 	);
 });
 ```
-Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute above code (note: <em>devtools.chrome.enabled</em> should be set to <em>true</em> in about:config).
+
 ##### Additional options in about:config
 * <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
 * <em>extensions.delayedStartup.shutdownNotification</em> – disable extensions after this <a href="https://developer.mozilla.org/en-US/docs/Observer_Notifications">notification</a> (use empty string to disable right after <a href="https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions#Reason_constants">APP_SHUTDOWN</a>)
