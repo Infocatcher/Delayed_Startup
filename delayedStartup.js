@@ -102,8 +102,8 @@ var delayedStartup = {
 		var selectors = [];
 		for(var extId in this.exts) {
 			selectors.push(
-				'.addon[value=' + JSON.stringify(extId) + ']'
-				+ ' .addon-control:-moz-any(.enable, .disable, .remove) > .button-box'
+				".addon[value=" + JSON.stringify(extId)
+				+ "] .addon-control:-moz-any(.enable, .disable, .remove) > .button-box"
 			);
 		}
 		var cssStr = '\
