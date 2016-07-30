@@ -6,6 +6,7 @@
 		<em:id>delayedStartup@infocatcher</em:id>
 		<em:type>2</em:type>
 		<em:bootstrap>true</em:bootstrap>
+		<em:multiprocessCompatible>true</em:multiprocessCompatible>
 		<em:name>Delayed Startup</em:name>
 		<em:version>0.1.0b1</em:version>
 		<em:description>Adds ability to enable restartless extensions after delay (and disable them on shutdown) to reduce startup time</em:description>
