@@ -6,6 +6,8 @@
 `*` – improved<br>
 
 ##### master/HEAD
+`x` Fixed compatibility with future Firefox versions: don't use deprecated `Date.prototype.toLocaleFormat()` in debug logs (<em>extensions.delayedStartup.debug</em> = true) (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=818634">bug 818634</a>).<br>
+
 ##### 0.1.0b1 (2014-06-24)
 `+` Added ability to only disable extensions on shutdown (set delay to `-1`).<br>
 `+` Added support for Gecko 2 – 9.<br>

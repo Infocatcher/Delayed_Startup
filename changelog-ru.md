@@ -6,6 +6,8 @@
 `*` – улучшено<br>
 
 ##### master/HEAD
+`x` Исправлена совместимость с будущими версиями Firefox: прекращено использование `Date.prototype.toLocaleFormat()` в отладочных логах (<em>extensions.delayedStartup.debug</em> = true) (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=818634">bug 818634</a>).<br>
+
 ##### 0.1.0b1 (2014-06-24)
 `+` Добавлена возможность только отключать расширения при выходе (установите задержку в `-1`).<br>
 `+` Добавлена поддержка Gecko 2 – 9.<br>
