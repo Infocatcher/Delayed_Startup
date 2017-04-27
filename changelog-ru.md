@@ -6,6 +6,8 @@
 `*` – улучшено<br>
 
 ##### master/HEAD
+`*` Упрощен внутренний код.<br>
+`+` Добавлен API <a href="https://github.com/Infocatcher/Delayed_Startup#api">Services.delayedStartupAddons</a>.<br>
 `x` Исправлена совместимость с будущими версиями Firefox: прекращено использование `Date.prototype.toLocaleFormat()` в отладочных логах (<em>extensions.delayedStartup.debug</em> = true) (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=818634">bug 818634</a>).<br>
 
 ##### 0.1.0b1 (2014-06-24)
