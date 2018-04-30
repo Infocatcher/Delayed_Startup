@@ -84,7 +84,7 @@ var delayedStartup = {
 			.AddonManager;
 	},
 	disableExtension: function(extId, disable) {
-		this.addonManager.getAddonByID(extId, function(addon) {
+		var then, promise = this.addonManager.getAddonByID(extId, then = function(addon) {
 			if(!addon)
 				Components.utils.reportError(LOG_PREFIX + "Extension " + extId + " not found!");
 			else if(addon.userDisabled != disable) {
@@ -92,6 +92,7 @@ var delayedStartup = {
 				addon.userDisabled = disable;
 			}
 		});
+		promise && typeof promise.then == "function" && promise.then(then, Components.utils.reportError); // Firefox 61+
 	},
 	get sss() {
 		delete this.sss;
