@@ -170,7 +170,9 @@ var delayedStartup = {
 			return;
 		}
 
-		var {OS, TextDecoder} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
+		var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
+		// Global object was changed in Firefox 57+ https://bugzilla.mozilla.org/show_bug.cgi?id=1186409
+		var TextDecoder = Components.utils.getGlobalForObject(OS).TextDecoder;
 		var onFailure = function(err) {
 			Components.utils.reportError(err);
 			callback.call(context, "");
