@@ -146,45 +146,49 @@ var delayedStartup = {
 		delete Services.delayedStartupAddons;
 	},
 	readFromFileAsync: function(file, callback, context) {
-		if(parseFloat(Services.appinfo.platformVersion) < 20) {
-			var {NetUtil} = Components.utils.import("resource://gre/modules/NetUtil.jsm", {});
-			NetUtil.asyncFetch(file, function(istream, status) {
-				var data = "";
-				if(Components.isSuccessCode(status)) {
-					try { // Firefox 7+ throws after istream.available() on empty files
-						data = NetUtil.readInputStreamToString(
-							istream,
-							istream.available(),
-							{ charset: "UTF-8", replacement: "\ufffd" } // Only Gecko 11.0+
-						);
-					}
-					catch(e) {
-						if(String(e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
-							Components.utils.reportError(e);
-					}
-				}
-				else {
-					Components.utils.reportError(LOG_PREFIX + "NetUtil.asyncFetch() failed: " + status);
-				}
-				callback.call(context, data);
-			});
-			return;
+		try { // Firefox 20+
+			var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
+			// Global object was changed in Firefox 57+ https://bugzilla.mozilla.org/show_bug.cgi?id=1186409
+			var textDecoder = new (Components.utils.getGlobalForObject(OS)).TextDecoder();
+			var onFailure = function(err) {
+				Components.utils.reportError(err);
+				callback.call(context, "");
+			};
+			return OS.File.read(file.path).then(
+				function onSuccess(arr) {
+					var data = textDecoder.decode(arr);
+					callback.call(context, data);
+				},
+				onFailure
+			).then(null, onFailure);
 		}
-
-		var {OS} = Components.utils.import("resource://gre/modules/osfile.jsm", {});
-		// Global object was changed in Firefox 57+ https://bugzilla.mozilla.org/show_bug.cgi?id=1186409
-		var TextDecoder = Components.utils.getGlobalForObject(OS).TextDecoder;
-		var onFailure = function(err) {
-			Components.utils.reportError(err);
-			callback.call(context, "");
-		};
-		OS.File.read(file.path).then(
-			function onSuccess(arr) {
-				var data = new TextDecoder().decode(arr);
-				callback.call(context, data);
-			},
-			onFailure
-		).then(null, onFailure);
+		catch(e) {
+			_log("readFromFileAsync(): OS.File.read() failed:\n" + e);
+			return this.readFromFileAsyncLegacy.apply(this, arguments);
+		}
+	},
+	readFromFileAsyncLegacy: function(file, callback, context) {
+		var {NetUtil} = Components.utils.import("resource://gre/modules/NetUtil.jsm", {});
+		NetUtil.asyncFetch(file, function(istream, status) {
+			var data = "";
+			if(Components.isSuccessCode(status)) {
+				try { // Firefox 7+ throws after istream.available() on empty files
+					data = NetUtil.readInputStreamToString(
+						istream,
+						istream.available(),
+						{ charset: "UTF-8", replacement: "\ufffd" } // Only Gecko 11.0+
+					);
+				}
+				catch(e) {
+					if(String(e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
+						Components.utils.reportError(e);
+				}
+			}
+			else {
+				Components.utils.reportError(LOG_PREFIX + "NetUtil.asyncFetch() failed: " + status);
+			}
+			callback.call(context, data);
+		});
 	}
 };
 
