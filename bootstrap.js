@@ -17,6 +17,7 @@ function startup(params, reason) {
 	function init() {
 		startupTimer = null;
 		var rootURL = parseFloat(Services.appinfo.platformVersion) >= 10
+			|| parseFloat(Services.appinfo.version) >= 10 // Pale Moon
 			? "chrome://delayedstartup/content/"
 			: params && params.resourceURI
 				? params.resourceURI.spec
