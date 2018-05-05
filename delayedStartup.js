@@ -163,7 +163,7 @@ var delayedStartup = {
 			).then(null, onFailure);
 		}
 		catch(e) {
-			_log("readFromFileAsync(): OS.File.read() failed:\n" + e);
+			_log("OS.File.read() failed:\n" + e);
 			return this.readFromFileAsyncLegacy.apply(this, arguments);
 		}
 	},
