@@ -44,7 +44,6 @@ var delayedStartup = {
 		}
 	},
 	onShutdown: function() {
-		this.onShutdown = function() {}; // Only once
 		var exts = this.exts;
 		for(var extId in exts) {
 			_log("Disable " + extId);
