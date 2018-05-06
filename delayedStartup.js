@@ -99,11 +99,18 @@ var delayedStartup = {
 			.getService(Components.interfaces.nsIStyleSheetService);
 	},
 	loadStyles: function() {
+		var any = "-moz-any";
+		try { // https://developer.mozilla.org/en-US/docs/Web/CSS/:matches
+			Services.appShell.hiddenDOMWindow.document.querySelector(":matches(*)");
+			any = "matches";
+		}
+		catch(e) {
+		}
 		var selectors = [];
 		for(var extId in this.exts) {
 			selectors.push(
 				".addon[value=" + JSON.stringify(extId)
-				+ "] .addon-control:-moz-any(.enable, .disable, .remove) > .button-box"
+				+ "] .addon-control:" + any + "(.enable, .disable, .remove) > .button-box"
 			);
 		}
 		var cssStr = '\
