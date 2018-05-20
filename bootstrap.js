@@ -33,15 +33,13 @@ function startup(params, reason) {
 		init();
 		return;
 	}
-	var initialized = false;
 	Services.obs.addObserver(startupObserver = function observer(subject, topic, data) {
 		subject.addEventListener("load", function load(e) {
+			subject.removeEventListener("load", load, false);
+			if(!startupObserver)
+				return;
 			Services.obs.removeObserver(observer, topic);
 			startupObserver = null;
-			subject.removeEventListener("load", load, false);
-			if(initialized)
-				return;
-			initialized = true;
 			initPrefs();
 			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
 			startupTimer = timer(init, initialDelay);
