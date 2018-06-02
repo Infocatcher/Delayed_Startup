@@ -89,6 +89,8 @@ var delayedStartup = {
 			else if(addon.userDisabled != disable) {
 				_log(addon.id + " (" + addon.name + "): userDisabled -> " + disable);
 				addon.userDisabled = disable;
+				if(addon.userDisabled != disable) // Firefox 62+, https://bugzilla.mozilla.org/show_bug.cgi?id=1461146
+					disable ? addon.disable() : addon.enable();
 			}
 		});
 		promise && typeof promise.then == "function" && promise.then(then, Components.utils.reportError); // Firefox 61+
