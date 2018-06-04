@@ -47,7 +47,7 @@ var delayedStartup = {
 		var exts = this.exts;
 		for(var extId in exts) {
 			_log("Disable " + extId);
-			this.disableExtension(extId, true);
+			this.disableAddon(extId, true);
 		}
 	},
 	readConfig: function(callback, context) {
@@ -74,7 +74,7 @@ var delayedStartup = {
 		this._timers[extId] = timer(function() {
 			_log(delay + " ms => enable " + extId);
 			delete this._timers[extId];
-			this.disableExtension(extId, false);
+			this.disableAddon(extId, false);
 		}.bind(this), delay);
 	},
 	get addonManager() {
@@ -82,12 +82,12 @@ var delayedStartup = {
 		return this.addonManager = Components.utils.import("resource://gre/modules/AddonManager.jsm", {})
 			.AddonManager;
 	},
-	disableExtension: function(extId, disable) {
+	disableAddon: function(extId, disable) {
 		var then, promise = this.addonManager.getAddonByID(extId, then = function(addon) {
 			if(!addon)
 				Components.utils.reportError(LOG_PREFIX + "Extension " + extId + " not found!");
 			else if(addon.userDisabled != disable) {
-				_log(addon.id + " (" + addon.name + "): userDisabled -> " + disable);
+				_log(addon.id + " (" + addon.name + "): " + (disable ? "disable" : "enable"));
 				addon.userDisabled = disable;
 				if(addon.userDisabled != disable) // Firefox 62+, https://bugzilla.mozilla.org/show_bug.cgi?id=1461146
 					disable ? addon.disable() : addon.enable();
