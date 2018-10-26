@@ -16,14 +16,14 @@ function startup(params, reason) {
 	}
 	function init() {
 		startupTimer = null;
-		var rootURL = parseFloat(Services.appinfo.platformVersion) >= 10
-			|| parseFloat(Services.appinfo.version) >= 10 // Pale Moon
-			? "chrome://delayedstartup/content/"
-			: params && params.resourceURI
+		var rootURL = "chrome://delayedstartup/content/"; // Firefox 10+
+		if(!isValidChromeURL(rootURL)) {
+			rootURL = params && params.resourceURI
 				? params.resourceURI.spec
 				: new Error().fileName
 					.replace(/^.* -> /, "")
 					.replace(/[^\/]+$/, "");
+		}
 		// Note: we should specify target object at least for Firefox 4
 		Services.scriptloader.loadSubScript(rootURL + "delayedStartup.js", global);
 		delayedStartup.init(reason);
@@ -57,4 +57,18 @@ function timer(fn, delay) {
 		.createInstance(Components.interfaces.nsITimer);
 	timer.init(fn, delay, timer.TYPE_ONE_SHOT);
 	return timer;
+}
+function isValidChromeURL(url) {
+	try {
+		var cr = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
+			.getService(Components.interfaces.nsIChromeRegistry);
+		var uri = Services.io.newURI(url, null, null);
+		return !!cr.convertChromeURL(uri);
+	}
+	catch(e) {
+		!uri && Components.utils.reportError(e);
+	}
+	if(!cr || !("convertChromeURL" in cr)) // Unable to detect, assume available
+		return true;
+	return false;
 }
