@@ -10,6 +10,7 @@
 `+` Добавлен API <a href="https://github.com/Infocatcher/Delayed_Startup#api">Services.delayedStartupAddons</a>.<br>
 `x` Исправлена совместимость с будущими версиями Firefox: прекращено использование `Date.prototype.toLocaleFormat()` в отладочных логах (<em>extensions.delayedStartup.debug</em> = true) (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=818634">bug 818634</a>).<br>
 `x` Исправления для совместимости с Firefox 57-62.<br>
+`x` Исправлен запуск после падения браузера, если используется расширение Session Manager.<br>
 
 ##### 0.1.0b1 (2014-06-24)
 `+` Добавлена возможность только отключать расширения при выходе (установите задержку в `-1`).<br>
