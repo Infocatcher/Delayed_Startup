@@ -53,13 +53,13 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 		if(idLength > maxId)
 			maxId = idLength;
 	});
-	var maxPad = new Array(maxId + 2 + String(getDelay(lastIndx)).length).join(" ");
+	var maxPad = new Array(maxId + 2 + ("" + getDelay(lastIndx)).length).join(" ");
 	var out = restartless.map(function(addon, i) {
 		var id = escId(addon.id);
 		var name = addon.name.replace(/\n|\r/, " ");
 		var delay = getDelay(i);
 		var notLast = i != lastIndx ? "," : " ";
-		var pad = maxPad.substr(id.length + notLast.length + String(delay).length);
+		var pad = maxPad.substr(id.length + notLast.length + ("" + delay).length);
 		return '\t"' + id + '": ' + pad + delay + notLast + ' // ' + name;
 	});
 	Services.console.logStringMessage(
