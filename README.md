@@ -27,7 +27,7 @@ All delays are in milliseconds, use `-1` to only disable on shutdown.
 	"about-addons-memory@tn123.org":   5000  // about:addons-memory
 }
 ```
-Note: spaces around “//” are required (because comments isn't allowed in JSON and we remove them manually)!
+Note: spaces around “//” are required (because comments aren't allowed in JSON format and will be removed manually)!
 ##### Simple template generator:
 Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute following code (note: <em>devtools.chrome.enabled</em> should be set to <em>true</em> in about:config):
 ```js
