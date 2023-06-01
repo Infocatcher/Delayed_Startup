@@ -41,12 +41,31 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 			&& addon.id != "delayedStartup@infocatcher";
 	});
 	var lastIndx = restartless.length - 1;
+	restartless.sort(function(a1, a2) {
+		var a1Delay = getStartupDelay(a1.id);
+		var a2Delay = getStartupDelay(a2.id);
+		var a1Name = a1.name;
+		var a2Name = a2.name;
+		if(a1Delay != null && a2Delay != null)
+			return a2Delay == a1Delay ? a1Name > a2Name : a1Delay > a2Delay;
+		if(a1Delay != null)
+			return -1;
+		if(a2Delay != null)
+			return 1;
+		return a1Name > a2Name;
+	});
 	var maxId = 0;
 	function escId(id) {
 		return id.replace(/"/g, '\\"');
 	}
 	function getDelay(i) {
-		return (i + 1)*200;
+		var addon = restartless[i];
+		var delay = getStartupDelay(addon.id);
+		return delay == null ? (i + 1)*200 : delay;
+	}
+	function getStartupDelay(extId) {
+		return "delayedStartupAddons" in Services
+			&& Services.delayedStartupAddons[extId] || null;
 	}
 	restartless.forEach(function(addon) {
 		var idLength = escId(addon.id).length;
