@@ -78,15 +78,22 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 			lastDelay = 0;
 		lastDelay += 200;
 		addon.__delay = lastDelay;
+		addon.__new = true;
 	});
 	var maxPad = new Array(maxId + 2 + ("" + getDelay(lastIndx)).length).join(" ");
+	var sepAdded;
 	var out = restartless.map(function(addon, i) {
 		var id = escId(addon.id);
 		var name = addon.name.replace(/\n|\r/, " ");
 		var delay = getDelay(i);
 		var notLast = i != lastIndx ? "," : " ";
 		var pad = maxPad.substr(id.length + notLast.length + ("" + delay).length);
-		return '\t"' + id + '": ' + pad + delay + notLast + ' // ' + name;
+		var sep = "";
+		if(!sepAdded && (addon.__new || false)) {
+			sepAdded = true;
+			sep = "\t// Automatically generated delays:\n";
+		}
+		return sep + '\t"' + id + '": ' + pad + delay + notLast + ' // ' + name;
 	});
 	Services.console.logStringMessage(
 		"// Restartless extensions, template for Delayed Startup\n"
