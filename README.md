@@ -31,9 +31,10 @@ Note: spaces around “//” are required (because comments aren't allowed in JS
 ##### Simple template generator:
 Open <a href="https://developer.mozilla.org/en-US/docs/Error_Console">error</a>/<a href="https://developer.mozilla.org/en-US/docs/Tools/Browser_Console">browser console</a> (Ctrl+Shift+J) and execute following code (note: <em>devtools.chrome.enabled</em> should be set to <em>true</em> in about:config):
 ```js
+(function() {
 Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
-AddonManager.getAddonsByTypes(["extension"], function(addons) {
+var then, promise = AddonManager.getAddonsByTypes(["extension"], then = function(addons) {
 	var restartless = addons.filter(function(addon) {
 		var ops = addon.operationsRequiringRestart;
 		return !addon.appDisabled
@@ -103,6 +104,8 @@ AddonManager.getAddonsByTypes(["extension"], function(addons) {
 		+ "\n}"
 	);
 });
+promise && typeof promise.then == "function" && promise.then(then, Components.utils.reportError); // Firefox 61+
+})();
 ```
 
 ##### Additional options in about:config
