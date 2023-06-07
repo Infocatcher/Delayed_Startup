@@ -56,7 +56,6 @@ var then, promise = AddonManager.getAddonsByTypes(["extension"], then = function
 		return a1Name > a2Name;
 	});
 	var maxId = 0;
-	var lastDelay = 0;
 	function escId(id) {
 		return id.replace(/"/g, '\\"');
 	}
@@ -67,18 +66,14 @@ var then, promise = AddonManager.getAddonsByTypes(["extension"], then = function
 		return "delayedStartupAddons" in Services
 			&& Services.delayedStartupAddons[extId] || null;
 	}
-	restartless.forEach(function(addon) {
+	restartless.forEach(function(addon, i) {
 		var idLength = escId(addon.id).length;
 		if(idLength > maxId)
 			maxId = idLength;
-		if(addon.__delay != null) {
-			lastDelay = addon.__delay;
+		if(addon.__delay != null)
 			return;
-		}
-		if(lastDelay == -1)
-			lastDelay = 0;
-		lastDelay += 200;
-		addon.__delay = lastDelay;
+		var prev = i > 0 && restartless[i - 1];
+		addon.__delay = Math.round((prev && prev.__delay || 0)/100)*100 + 200;
 		addon.__new = true;
 	});
 	var maxPad = new Array(maxId + 2 + ("" + getDelay(lastIndx)).length).join(" ");
