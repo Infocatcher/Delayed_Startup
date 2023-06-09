@@ -42,6 +42,10 @@ var then, promise = AddonManager.getAddonsByTypes(["extension"], then = function
 			&& addon.id != "delayedStartup@infocatcher";
 	});
 	var lastIndx = restartless.length - 1;
+	if(lastIndx < 0) {
+		Services.console.logStringMessage("Restartless extensions not found!");
+		return;
+	}
 	restartless.sort(function(a1, a2) {
 		var a1Delay = a1.__delay = getStartupDelay(a1.id);
 		var a2Delay = a2.__delay = getStartupDelay(a2.id);
