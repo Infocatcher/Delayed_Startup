@@ -39,7 +39,8 @@ var then, promise = AddonManager.getAddonsByTypes(["extension"], then = function
 		var ops = addon.operationsRequiringRestart;
 		return !addon.appDisabled
 			&& !(ops & AddonManager.OP_NEEDS_RESTART_ENABLE || ops & AddonManager.OP_NEEDS_RESTART_DISABLE)
-			&& addon.id != "delayedStartup@infocatcher";
+			&& addon.id != "delayedStartup@infocatcher"
+			&& (addon.iconURL || "").substr(0, 29) != "resource://search-extensions/";
 	});
 	var lastIndx = restartless.length - 1;
 	if(lastIndx < 0) {
