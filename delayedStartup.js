@@ -17,7 +17,7 @@ var delayedStartup = {
 			this._timers[stylesId] = timer(function() {
 				delete this._timers[stylesId];
 				this.loadStyles();
-			}.bind(this), 0);
+			}, this, 0);
 			this.initAPI();
 		}, this);
 	},
@@ -75,7 +75,7 @@ var delayedStartup = {
 			_log(delay + " ms => enable " + extId);
 			delete this._timers[extId];
 			this.disableAddon(extId, false);
-		}.bind(this), delay);
+		}, this, delay);
 	},
 	get addonManager() {
 		delete this.addonManager;

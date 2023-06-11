@@ -44,7 +44,7 @@ function startup(params, reason) {
 			Services.obs.removeObserver(observer, topic);
 			initPrefs();
 			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
-			startupTimer = timer(init, initialDelay);
+			startupTimer = timer(init, global, initialDelay);
 		}, false);
 	}, "domwindowopened", false);
 }
@@ -54,10 +54,12 @@ function shutdown(params, reason) {
 	delayedStartup  && delayedStartup.destroy(reason);
 }
 
-function timer(fn, delay) {
+function timer(fn, context, delay) {
 	var timer = Components.classes["@mozilla.org/timer;1"]
 		.createInstance(Components.interfaces.nsITimer);
-	timer.init(fn, delay, timer.TYPE_ONE_SHOT);
+	timer.init(function() {
+		fn.call(context);
+	}, delay, timer.TYPE_ONE_SHOT);
 	return timer;
 }
 function isValidChromeURL(url) {
