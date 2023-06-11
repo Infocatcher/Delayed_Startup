@@ -188,7 +188,7 @@ var delayedStartup = {
 					);
 				}
 				catch(e) {
-					if(String(e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
+					if(("" + e).indexOf("NS_BASE_STREAM_CLOSED") == -1)
 						Components.utils.reportError(e);
 				}
 			}
