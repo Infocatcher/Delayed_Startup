@@ -5,10 +5,11 @@ var delayedStartup = {
 	exts: {},
 	_timers: {},
 	init: function(reason) {
-		_log("init() => readConfig()");
+		_log("init() -> readConfig()");
 		this.readConfig(function() {
+			_log("readConfig(): done");
 			if(reason == APP_STARTUP) {
-				_log("APP_STARTUP => init() => loadDelayed()");
+				_log("[APP_STARTUP] -> loadDelayed()");
 				var exts = this.exts;
 				for(var extId in exts)
 					this.loadDelayed(extId, exts[extId]);
@@ -72,7 +73,7 @@ var delayedStartup = {
 		if(delay < 0)
 			return;
 		this._timers[extId] = timer(function() {
-			_log(delay + " ms => enable " + extId);
+			_log(delay + " ms -> enable " + extId);
 			delete this._timers[extId];
 			this.disableAddon(extId, false);
 		}, this, delay);
@@ -87,7 +88,7 @@ var delayedStartup = {
 			if(!addon)
 				Components.utils.reportError(LOG_PREFIX + "Extension " + extId + " not found!");
 			else if(addon.userDisabled != disable) {
-				_log(addon.id + " (" + addon.name + "): " + (disable ? "disable" : "enable"));
+				_log("-> " + (disable ? "disable" : "enable") + " " + addon.id + " (" + addon.name + ")");
 				addon.userDisabled = disable;
 				if(addon.userDisabled != disable) // Firefox 62+, https://bugzilla.mozilla.org/show_bug.cgi?id=1461146
 					disable ? addon.disable() : addon.enable();
@@ -126,14 +127,18 @@ var delayedStartup = {
 			}';
 		var cssURI = this.cssURI = this.newCssURI(cssStr);
 		var sss = this.sss;
-		if(!sss.sheetRegistered(cssURI, sss.USER_SHEET))
+		if(!sss.sheetRegistered(cssURI, sss.USER_SHEET)) {
+			_log("Load CSS");
 			sss.loadAndRegisterSheet(cssURI, sss.USER_SHEET);
+		}
 	},
 	unloadStyles: function() {
 		var cssURI = this.cssURI;
 		var sss = this.sss;
-		if(cssURI && sss.sheetRegistered(cssURI, sss.USER_SHEET))
+		if(cssURI && sss.sheetRegistered(cssURI, sss.USER_SHEET)) {
+			_log("Unload CSS");
 			sss.unregisterSheet(cssURI, sss.USER_SHEET);
+		}
 	},
 	newCssURI: function(cssStr) {
 		cssStr = this.trimMultilineString(cssStr);
