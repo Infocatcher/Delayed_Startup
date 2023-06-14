@@ -18,7 +18,7 @@ var delayedStartup = {
 			this._timers[stylesId] = timer(function() {
 				delete this._timers[stylesId];
 				this.loadStyles();
-			}, this, 0);
+			}, this, 50);
 			this.initAPI();
 		}, this);
 	},
