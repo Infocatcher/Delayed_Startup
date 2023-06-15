@@ -8,11 +8,14 @@ var delayedStartup = {
 		_log("init() -> readConfig()");
 		this.readConfig(function() {
 			_log("readConfig(): done");
-			if(reason == APP_STARTUP) {
-				_log("[APP_STARTUP] -> loadDelayed()");
-				var exts = this.exts;
-				for(var extId in exts)
-					this.loadDelayed(extId, exts[extId]);
+			var isStartup = reason == APP_STARTUP;
+			_log((isStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
+			var exts = this.exts;
+			for(var extId in exts) {
+				var delay = exts[extId];
+				if(!isStartup && delay > 0)
+					delay = 5;
+				this.loadDelayed(extId, delay);
 			}
 			var stylesId = "\x00delayedStartup#styles";
 			this._timers[stylesId] = timer(function() {
