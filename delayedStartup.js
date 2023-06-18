@@ -27,8 +27,8 @@ var delayedStartup = {
 		}, this);
 	},
 	destroy: function(reason) {
-		for(var tmr in this._timers)
-			tmr.cancel();
+		for(var p in this._timers)
+			this._timers[p].cancel();
 		if(reason == APP_SHUTDOWN) {
 			_log("APP_SHUTDOWN");
 			var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
