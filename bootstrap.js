@@ -1,5 +1,5 @@
 const prefNS = "extensions.delayedStartup.";
-var delayedStartup, startupObserver, startupTimer;
+var delayedStartup, startupObserver;
 var global = this;
 
 function install(params, reason) {
@@ -15,7 +15,6 @@ function startup(params, reason) {
 		db.setBoolPref("debug", false);
 	}
 	function init() {
-		startupTimer = null;
 		var rootURL = "chrome://delayedstartup/content/"; // Firefox 10+
 		if(!isValidChromeURL(rootURL)) {
 			rootURL = params && params.resourceURI
@@ -44,23 +43,28 @@ function startup(params, reason) {
 			Services.obs.removeObserver(observer, topic);
 			initPrefs();
 			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
-			startupTimer = timer(init, global, initialDelay);
+			timer(init, global, initialDelay);
 		}, false);
 	}, "domwindowopened", false);
 }
 function shutdown(params, reason) {
-	startupTimer    && startupTimer.cancel();
+	for(var p in _timers)
+		_timers[p].cancel();
 	startupObserver && Services.obs.removeObserver(startupObserver, "domwindowopened");
 	delayedStartup  && delayedStartup.destroy(reason);
 }
 
+var _i = -1;
+var _timers = { __proto__: null };
 function timer(fn, context, delay) {
 	var timer = Components.classes["@mozilla.org/timer;1"]
 		.createInstance(Components.interfaces.nsITimer);
+	var i = ++_i;
 	timer.init(function() {
+		delete _timers[i];
 		fn.call(context);
 	}, delay, timer.TYPE_ONE_SHOT);
-	return timer;
+	return _timers[i] = timer;
 }
 function isValidChromeURL(url) {
 	try {

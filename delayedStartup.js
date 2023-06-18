@@ -3,7 +3,6 @@ const LOG_PREFIX = "[Delayed Startup] ";
 var delayedStartup = {
 	dataFileName: "delayedStartup.json",
 	exts: {},
-	_timers: {},
 	init: function(reason) {
 		_log("init() -> readConfig()");
 		this.readConfig(function() {
@@ -18,17 +17,11 @@ var delayedStartup = {
 					delay = (d += 5);
 				this.loadDelayed(extId, delay);
 			}
-			var stylesId = "\x00delayedStartup#styles";
-			this._timers[stylesId] = timer(function() {
-				delete this._timers[stylesId];
-				this.loadStyles();
-			}, this, 50);
+			timer(this.loadStyles, this, 50);
 			this.initAPI();
 		}, this);
 	},
 	destroy: function(reason) {
-		for(var p in this._timers)
-			this._timers[p].cancel();
 		if(reason == APP_SHUTDOWN) {
 			_log("APP_SHUTDOWN");
 			var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
@@ -76,9 +69,8 @@ var delayedStartup = {
 	loadDelayed: function(extId, delay) {
 		if(delay < 0)
 			return;
-		this._timers[extId] = timer(function() {
+		timer(function() {
 			_log(delay + " ms -> enable " + extId);
-			delete this._timers[extId];
 			this.disableAddon(extId, false);
 		}, this, delay);
 	},
