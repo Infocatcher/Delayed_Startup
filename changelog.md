@@ -12,6 +12,7 @@
 `x` Compatibility fixes for Firefox 57-62.<br>
 `x` Fixed startup after browser crash, if used Session Manager extension.<br>
 `*` Changed startup logic: now all delayed extensions will be started after Delayed Startup startup, not only after browser startup.<br>
+`x` Fixed timers canceling, if Delayed Startup was disabled or uninstalled right after browser startup.<br>
 
 ##### 0.1.0b1 (2014-06-24)
 `+` Added ability to only disable extensions on shutdown (set delay to `-1`).<br>
