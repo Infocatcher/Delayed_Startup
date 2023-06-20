@@ -29,9 +29,9 @@ var delayedStartup = {
 				this.onShutdown();
 				return;
 			}
-			Services.obs.addObserver(function observer(subject, topic, data) {
-				// Following doesn't work (NS_ERROR_FAILURE) and isn't really needed on shutdown
-				//Services.obs.removeObserver(observer, topic);
+			var observer;
+			Services.obs.addObserver(observer = function(subject, topic, data) {
+				Services.obs.removeObserver(observer, topic);
 				_log(topic);
 				this.onShutdown();
 			}.bind(this), topic, false);
