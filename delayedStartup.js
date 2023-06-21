@@ -7,19 +7,22 @@ var delayedStartup = {
 		_log("init() -> readConfig()");
 		this.readConfig(function() {
 			_log("readConfig(): done");
-			var isStartup = reason == APP_STARTUP;
-			_log((isStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
-			var exts = this.exts;
-			var d = 0;
-			for(var extId in exts) {
-				var delay = exts[extId];
-				if(!isStartup && delay > 0)
-					delay = (d += 5);
-				this.loadDelayed(extId, delay);
-			}
-			timer(this.loadStyles, this, 50);
-			this.initAPI();
+			this.startup(reason);
 		}, this);
+	},
+	startup: function(reason) {
+		var isStartup = reason == APP_STARTUP;
+		_log((isStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
+		var exts = this.exts;
+		var d = 0;
+		for(var extId in exts) {
+			var delay = exts[extId];
+			if(!isStartup && delay > 0)
+				delay = (d += 5);
+			this.loadDelayed(extId, delay);
+		}
+		timer(this.loadStyles, this, 50);
+		this.initAPI();
 	},
 	destroy: function(reason) {
 		if(reason == APP_SHUTDOWN) {

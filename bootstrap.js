@@ -14,7 +14,7 @@ function startup(params, reason) {
 		db.setCharPref("shutdownNotification", "profile-change-teardown");
 		db.setBoolPref("debug", false);
 	}
-	function init() {
+	function loadDS() {
 		var rootURL = "chrome://delayedstartup/content/"; // Firefox 10+
 		if(!isValidChromeURL(rootURL)) {
 			rootURL = params && params.resourceURI
@@ -29,7 +29,7 @@ function startup(params, reason) {
 	}
 	if(reason != APP_STARTUP) {
 		initPrefs();
-		init();
+		loadDS();
 		return;
 	}
 	Services.obs.addObserver(startupObserver = function observer(subject, topic, data) {
@@ -43,7 +43,7 @@ function startup(params, reason) {
 			Services.obs.removeObserver(observer, topic);
 			initPrefs();
 			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
-			timer(init, global, initialDelay);
+			timer(loadDS, global, initialDelay);
 		}, false);
 	}, "domwindowopened", false);
 }
