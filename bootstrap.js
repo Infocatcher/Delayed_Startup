@@ -33,9 +33,7 @@ function startup(params, reason) {
 		return;
 	}
 	Services.obs.addObserver(startupObserver = function observer(subject, topic, data) {
-		if(!startupObserver)
-			return;
-		subject.addEventListener("load", function load(e) {
+		startupObserver && subject.addEventListener("load", function load(e) {
 			subject.removeEventListener("load", load, false);
 			if(!startupObserver)
 				return;
