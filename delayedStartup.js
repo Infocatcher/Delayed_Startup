@@ -25,24 +25,23 @@ var delayedStartup = {
 		this.initAPI();
 	},
 	destroy: function(reason) {
-		if(reason == APP_SHUTDOWN) {
-			_log("APP_SHUTDOWN");
-			var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
-			if(!topic) {
-				this.onShutdown();
-				return;
-			}
-			var observer;
-			Services.obs.addObserver(observer = function(subject, topic, data) {
-				Services.obs.removeObserver(observer, topic);
-				_log(topic);
-				this.onShutdown();
-			}.bind(this), topic, false);
-		}
-		else {
+		if(reason != APP_SHUTDOWN) {
 			this.unloadStyles();
 			this.destroyAPI();
+			return;
 		}
+		_log("APP_SHUTDOWN");
+		var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
+		if(!topic) {
+			this.onShutdown();
+			return;
+		}
+		var observer;
+		Services.obs.addObserver(observer = function(subject, topic, data) {
+			Services.obs.removeObserver(observer, topic);
+			_log(topic);
+			this.onShutdown();
+		}.bind(this), topic, false);
 	},
 	onShutdown: function() {
 		var exts = this.exts;
