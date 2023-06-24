@@ -70,9 +70,7 @@ var delayedStartup = {
 			.replace(/[ \t]\/\/[ \t].*$/mg, ""); // Allow only " // " for other comments
 	},
 	loadDelayed: function(extId, delay) {
-		if(delay < 0)
-			return;
-		timer(function() {
+		delay >= 0 && timer(function() {
 			_log(delay + " ms -> enable " + extId);
 			this.disableAddon(extId, false);
 		}, this, delay);
