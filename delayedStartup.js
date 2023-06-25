@@ -51,9 +51,7 @@ var delayedStartup = {
 		}
 	},
 	readConfig: function(callback, context) {
-		var dataFile = Components.classes["@mozilla.org/file/directory_service;1"]
-			.getService(Components.interfaces.nsIProperties)
-			.get("ProfD", Components.interfaces.nsIFile);
+		var dataFile = Services.dirsvc.get("ProfD", Components.interfaces.nsIFile);
 		dataFile.append(this.dataFileName);
 		this.readFromFileAsync(dataFile, function(data) {
 			if(!data)
