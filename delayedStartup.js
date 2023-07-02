@@ -11,18 +11,20 @@ var delayedStartup = {
 		}, this);
 	},
 	startup: function(reason) {
-		var isStartup = reason == APP_STARTUP;
-		_log((isStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
+		timer(this.loadStyles, this, 50);
+		this.initAPI();
+		var appStartup = reason == APP_STARTUP;
+		if(!appStartup && reason != ADDON_ENABLE)
+			return;
+		_log((appStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
 		var exts = this.exts;
 		var d = 0;
 		for(var extId in exts) {
 			var delay = exts[extId];
-			if(!isStartup && delay > 0)
+			if(!appStartup && delay > 0)
 				delay = (d += 5);
 			this.loadDelayed(extId, delay);
 		}
-		timer(this.loadStyles, this, 50);
-		this.initAPI();
 	},
 	destroy: function(reason) {
 		if(reason != APP_SHUTDOWN) {
