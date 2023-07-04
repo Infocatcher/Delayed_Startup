@@ -12,6 +12,7 @@ function startup(params, reason) {
 		var db = Services.prefs.getDefaultBranch(prefNS);
 		db.setIntPref("initialDelay", 50);
 		db.setCharPref("shutdownNotification", "profile-change-teardown");
+		db.setBoolPref("startOnEnable", true);
 		db.setBoolPref("debug", false);
 	}
 	function loadDS() {

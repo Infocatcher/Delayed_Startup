@@ -14,7 +14,10 @@ var delayedStartup = {
 		timer(this.loadStyles, this, 50);
 		this.initAPI();
 		var appStartup = reason == APP_STARTUP;
-		if(!appStartup && reason != ADDON_ENABLE)
+		if(
+			!appStartup
+			&& (reason != ADDON_ENABLE || !Services.prefs.getBoolPref(prefNS + "startOnEnable"))
+		)
 			return;
 		_log((appStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
 		var exts = this.exts;
