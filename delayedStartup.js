@@ -16,7 +16,7 @@ var delayedStartup = {
 		var appStartup = reason == APP_STARTUP;
 		if(
 			!appStartup
-			&& (reason != ADDON_ENABLE || !Services.prefs.getBoolPref(prefNS + "startOnEnable"))
+			&& (reason != ADDON_ENABLE || !prefs.getBoolPref("startOnEnable"))
 		)
 			return;
 		_log((appStartup ? "app startup" : "extension startup") + " -> loadDelayed()");
@@ -36,7 +36,7 @@ var delayedStartup = {
 			return;
 		}
 		_log("APP_SHUTDOWN");
-		var topic = Services.prefs.getCharPref(prefNS + "shutdownNotification");
+		var topic = prefs.getCharPref("shutdownNotification");
 		if(!topic) {
 			this.onShutdown();
 			return;
@@ -210,7 +210,7 @@ function ts() {
 	return d.toTimeString().replace(/^.*\d+:(\d+:\d+).*$/, "$1") + ":" + "000".substr(("" + ms).length) + ms + " ";
 }
 function _log(s) {
-	if(!Services.prefs.getBoolPref(prefNS + "debug"))
+	if(!prefs.getBoolPref("debug"))
 		return;
 	var msg = LOG_PREFIX + ts() + s;
 	Services.console.logStringMessage(msg);

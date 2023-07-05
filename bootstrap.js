@@ -1,5 +1,5 @@
 const prefNS = "extensions.delayedStartup.";
-var delayedStartup, startupObserver;
+var delayedStartup, startupObserver, prefs;
 var global = this;
 
 function install(params, reason) {
@@ -10,6 +10,7 @@ function startup(params, reason) {
 	Components.utils.import("resource://gre/modules/Services.jsm");
 	function initPrefs() {
 		var db = Services.prefs.getDefaultBranch(prefNS);
+		prefs = Services.prefs.getBranch(prefNS);
 		db.setIntPref("initialDelay", 50);
 		db.setCharPref("shutdownNotification", "profile-change-teardown");
 		db.setBoolPref("startOnEnable", true);
@@ -41,7 +42,7 @@ function startup(params, reason) {
 			startupObserver = null;
 			Services.obs.removeObserver(observer, topic);
 			initPrefs();
-			var initialDelay = Services.prefs.getIntPref(prefNS + "initialDelay");
+			var initialDelay = prefs.getIntPref("initialDelay");
 			timer(loadDS, global, initialDelay);
 		}, false);
 	}, "domwindowopened", false);
