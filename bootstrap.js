@@ -42,8 +42,7 @@ function startup(params, reason) {
 			startupObserver = null;
 			Services.obs.removeObserver(observer, topic);
 			initPrefs();
-			var initialDelay = prefs.getIntPref("initialDelay");
-			timer(loadDS, global, initialDelay);
+			timer(loadDS, global, prefs.getIntPref("initialDelay"));
 		}, false);
 	}, "domwindowopened", false);
 }
