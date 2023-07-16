@@ -111,6 +111,7 @@ promise && typeof promise.then == "function" && promise.then(then, Components.ut
 ##### Additional options in about:config
 * <em>extensions.delayedStartup.initialDelay</em> – initial delay between first window loading and reading of configuration file
 * <em>extensions.delayedStartup.shutdownNotification</em> – disable extensions after this <a href="https://developer.mozilla.org/en-US/docs/Observer_Notifications">notification</a> (use empty string to disable right after <a href="https://developer.mozilla.org/en-US/Add-ons/Bootstrapped_extensions#Reason_constants">APP_SHUTDOWN</a>)
+* <em>extensions.delayedStartup.startOnEnable</em> – also start all delayed extensions, if Delayed Startup was enabled (useful, if something went wrong on browser startup)
 * <em>extensions.delayedStartup.debug</em> – show debug messages in error console
 
 ### API
