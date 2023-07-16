@@ -35,8 +35,8 @@ var delayedStartup = {
 			this.destroyAPI();
 			return;
 		}
-		_log("APP_SHUTDOWN");
 		var topic = prefs.getCharPref("shutdownNotification");
+		_log("APP_SHUTDOWN, shutdown notification: " + topic);
 		if(!topic) {
 			this.onShutdown();
 			return;
